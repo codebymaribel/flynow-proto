@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-interface IconCounterProps {
+interface CounterWithArrowsProps {
   label?: string;
   increment: () => void;
   decrement: () => void;
@@ -8,13 +8,13 @@ interface IconCounterProps {
   defaultValue?: number;
 }
 
-export default function IconCounter({
+export default function CounterWithArrows({
   label,
   increment,
   decrement,
   count,
   defaultValue = 0,
-}: IconCounterProps) {
+}: CounterWithArrowsProps) {
   return (
     <div className="flex flex-row justify-between gap-2 ">
       <div className="flex flex-row">

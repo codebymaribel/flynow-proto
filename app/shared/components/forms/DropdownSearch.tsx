@@ -3,7 +3,7 @@
 import { useDebouncedCallback } from "use-debounce";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { searchAirports, type Airport } from "@/app/lib/actions";
+import { searchAirports, type Airport } from "@/app/features/flights/actions";
 
 type DropdownSearchProps = {
   name: string;

@@ -1,6 +1,6 @@
 import { UserIcon } from "@heroicons/react/24/outline";
-import IconCounter from "./IconCounter";
-import { UseCountReturn } from "@/app/hooks/useCount";
+import CounterWithArrows from "./CounterWithArrows";
+import { UseCountReturn } from "@/app/features/flights/hooks/useCount";
 import { useState } from "react";
 
 export default function PassengersAmount({
@@ -32,20 +32,20 @@ export default function PassengersAmount({
             : "hidden"
         }
       >
-        <IconCounter
+        <CounterWithArrows
           label="Adults"
           count={adultsCounter.count}
           increment={adultsCounter.increment}
           decrement={adultsCounter.decrement}
           defaultValue={1}
         />
-        <IconCounter
+        <CounterWithArrows
           label="Children"
           count={childrenCounter.count}
           increment={childrenCounter.increment}
           decrement={childrenCounter.decrement}
         />
-        <IconCounter
+        <CounterWithArrows
           label="Elders"
           count={eldersCounter.count}
           increment={eldersCounter.increment}

@@ -6,7 +6,7 @@ import {
   seat_Reserv,
   bookings,
   users,
-} from "../lib/placeholder-data";
+} from "../shared/lib/placeholder-data";
 import bcryptjs from "bcryptjs";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
