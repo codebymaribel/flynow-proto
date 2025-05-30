@@ -42,28 +42,28 @@ const airports = [
   {
     id: "d6e15727-9fe1-2961-8D5b-ea44a9b231aC",
     name: "Aeropuerto Internacional Simon Bolivar",
-    airport_code: "CCS",
+    iata_code: "CCS",
     city: "La Guaira",
     country: "Venezuela",
   },
   {
     id: "4fc365c9-8225-4e57-aa6a-ec8a219adfe7",
     name: "Miami International Airport",
-    airport_code: "MIA",
+    iata_code: "MIA",
     city: "Miami",
     country: "USA",
   },
   {
     id: "d6e15127-9fe1-2961-8D5b-ea44a9b231aC",
     name: "John F. Kennedy International Airport",
-    airport_code: "JFK",
+    iata_code: "JFK",
     city: "New York",
     country: "USA",
   },
   {
     id: "4fc365c9-8225-4e57-aa6a-ec8a219adfe7",
     name: "Panama International Airport",
-    airport_code: "PTY",
+    iata_code: "PTY",
     city: "Panama City",
     country: "Panama",
   },
@@ -114,7 +114,7 @@ const flights = [
   },
 ];
 
-const tickets = [
+const bookings = [
   {
     id: "0399a5f3-0a73-4fa3-9727-a93f6d1c0a5b",
     flight: flights[0].id,
@@ -127,4 +127,4 @@ const tickets = [
   },
 ];
 
-export { users, tickets, flights, seat_Reserv, airplanes, airports };
+export { users, bookings, flights, seat_Reserv, airplanes, airports };

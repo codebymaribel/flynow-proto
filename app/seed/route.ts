@@ -4,7 +4,7 @@ import {
   airports,
   flights,
   seat_Reserv,
-  tickets,
+  bookings,
   users,
 } from "../lib/placeholder-data";
 import bcryptjs from "bcryptjs";
@@ -76,16 +76,16 @@ async function seedAirports() {
   await sql`CREATE TABLE IF NOT EXISTS airports(
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    airport_code VARCHAR(50) NOT NULL,
+    iata_code VARCHAR(50) NOT NULL,
     city VARCHAR(50) NOT NULL,
     country VARCHAR(50) NOT NULL
     );`;
 
   const insertAirports = await Promise.all(
-    airports.map(({ id, name, airport_code, city, country }) => {
+    airports.map(({ id, name, iata_code, city, country }) => {
       return sql`
-            INSERT INTO airports (id, name, airport_code, city, country)
-            VALUES (${id}, ${name}, ${airport_code}, ${city}, ${country})
+            INSERT INTO airports (id, name, iata_code, city, country)
+            VALUES (${id}, ${name}, ${iata_code}, ${city}, ${country})
             ON CONFLICT (id) DO NOTHING;
             `;
     })
@@ -139,8 +139,8 @@ async function seedFlights() {
   return insertFlights;
 }
 
-async function seedTickets() {
-  await sql`CREATE TABLE IF NOT EXISTS tickets(
+async function seedBookings() {
+  await sql`CREATE TABLE IF NOT EXISTS bookings(
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     flight VARCHAR(50) NOT NULL,
     user_id VARCHAR(50) NOT NULL,
@@ -151,8 +151,8 @@ async function seedTickets() {
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`;
 
-  const insertTickets = await Promise.all(
-    tickets.map(
+  const insertBookings = await Promise.all(
+    bookings.map(
       ({
         id,
         flight,
@@ -164,7 +164,7 @@ async function seedTickets() {
         created_at,
       }) => {
         return sql`
-            INSERT INTO tickets (id, flight, user_id, reserved_seats, airport_from, airport_to, price, created_at)
+            INSERT INTO bookings (id, flight, user_id, reserved_seats, airport_from, airport_to, price, created_at)
             VALUES (${id}, ${flight}, ${user_id}, ${sql.array(
           reserved_seats
         )}, ${airport_from}, ${airport_to}, ${price}, ${created_at})
@@ -174,7 +174,7 @@ async function seedTickets() {
     )
   );
 
-  return insertTickets;
+  return insertBookings;
 }
 
 export async function GET() {
@@ -185,7 +185,7 @@ export async function GET() {
       seedAirports(),
       seedSeatReserv(),
       seedFlights(),
-      seedTickets(),
+      seedBookings(),
     ]);
     return Response.json({ message: "Database seeded successfully" });
   } catch (error) {
