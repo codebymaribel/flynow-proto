@@ -1,7 +1,7 @@
-import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import { UserIcon } from "@heroicons/react/24/outline";
 import IconCounter from "./IconCounter";
 import { UseCountReturn } from "@/app/hooks/useCount";
+import { useState } from "react";
 
 export default function PassengersAmount({
   adultsCounter,
@@ -12,44 +12,46 @@ export default function PassengersAmount({
   childrenCounter: UseCountReturn;
   eldersCounter: UseCountReturn;
 }) {
+  const [visible, setVisible] = useState(false);
   return (
-    <Menu>
-      <MenuButton className="flex flex-row items-center gap-2">
-        <UserIcon className="h-5 w-5 text-gray-400" />
-        <span className="font-medium text-gray-800">
-          {adultsCounter.count + childrenCounter.count + eldersCounter.count}
+    <div>
+      <div
+        className="flex flex-row items-center gap-2 cursor-pointer"
+        onClick={() => setVisible(!visible)}
+      >
+        <UserIcon className="h-6 w-6 text-blue-300 self-end" />
+        <span className="font-medium text-gray-600 transition border-b-2 border-transparent hover:border-blue-300 delay-50">
+          {adultsCounter.count} Adults, {childrenCounter.count} Children,{" "}
+          {eldersCounter.count} Elders
         </span>
-      </MenuButton>
-      <MenuItems
-        transition
-        className="absolute z-10 w-48 bg-white rounded-md shadow-lg py-2 px-2"
+      </div>
+      <div
+        className={
+          visible
+            ? "block absolute ml-6 w-[14rem] z-10 bg-white rounded-md shadow-lg py-2 px-2"
+            : "hidden"
+        }
       >
         <IconCounter
-          IconComponent={UserIcon}
           label="Adults"
           count={adultsCounter.count}
           increment={adultsCounter.increment}
           decrement={adultsCounter.decrement}
-          changeCount={adultsCounter.changeCount}
           defaultValue={1}
         />
         <IconCounter
-          IconComponent={UserIcon}
           label="Children"
           count={childrenCounter.count}
           increment={childrenCounter.increment}
           decrement={childrenCounter.decrement}
-          changeCount={childrenCounter.changeCount}
         />
         <IconCounter
-          IconComponent={UserIcon}
           label="Elders"
           count={eldersCounter.count}
           increment={eldersCounter.increment}
           decrement={eldersCounter.decrement}
-          changeCount={eldersCounter.changeCount}
         />
-      </MenuItems>
-    </Menu>
+      </div>
+    </div>
   );
 }
