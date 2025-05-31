@@ -4,9 +4,9 @@ import Navbar from "./shared/components/navbar";
 import { useState } from "react";
 import { useCount } from "@/app/features/flights/hooks/useCount";
 import { useEffect } from "react";
-import DateRangePicker from "@/app/shared/components/forms/datepickers";
-import PassengersAmount from "@/app/shared/components/forms/passengers-amount";
-import DropdownSearch from "@/app/shared/components/forms/DropdownSearch";
+import DateRangePicker from "@/app/shared/components/forms/DateRangePicker";
+import PassengersAmount from "@/app/features/flights/components/passengers-amount";
+import DropdownSearch from "@/app/features/flights/components/DropdownSearch";
 import { GlobeAmericasIcon, GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline";
 
 export default function Landing() {
