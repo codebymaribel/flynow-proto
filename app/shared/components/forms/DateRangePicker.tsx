@@ -9,15 +9,20 @@ interface DateRangePickerProps {
   startDate: Date | null;
   endDate: Date | null;
   onChange: (dates: [Date | null, Date | null]) => void;
+  oneWay?: boolean;
 }
 
-const DateRangePicker = ({ startDate, endDate, onChange }: DateRangePickerProps) => {
+const DateRangePicker = ({ startDate, endDate, onChange, oneWay = false }: DateRangePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (update: [Date | null, Date | null]) => {
     onChange(update);
-    // Close the calendar after both dates are selected
-    if (update[0] && update[1]) {
+    // Close the calendar after date selection based on flight type
+    if (oneWay && update[0]) {
+      // For one-way flights, close after selecting departure date
+      setIsOpen(false);
+    } else if (!oneWay && update[0] && update[1]) {
+      // For round trips, close after selecting both dates
       setIsOpen(false);
     }
   };
@@ -35,34 +40,48 @@ const DateRangePicker = ({ startDate, endDate, onChange }: DateRangePickerProps)
         <CalendarIcon className="h-5 w-5 border " />
         <div className="flex items-center gap-1 ">
           <span className="font-medium text-gray-400">
-            {startDate ? formatDate(startDate) : 'Check-in'} 
+            {startDate ? formatDate(startDate) : 'Departure'} 
           </span>
-          <span>—</span>
-          <span className="font-medium text-gray-400">
-            {endDate ? formatDate(endDate) : 'Check-out'}
-          </span>
+          {!oneWay && (
+            <>
+              <span>—</span>
+              <span className="font-medium text-gray-400">
+                {endDate ? formatDate(endDate) : 'Return'}
+              </span>
+            </>
+          )}
         </div>
       </div>
       
       {isOpen && (
         <div className="absolute z-50 mt-1">
-          <DatePicker
-            selected={startDate}
-            onChange={handleChange}
-            startDate={startDate}
-            endDate={endDate}
-            selectsRange
-            inline
-            minDate={new Date()}
-            calendarClassName="border-0 shadow-lg rounded-lg"
-            dayClassName={(date) => {
-              if (!startDate || !endDate) return '';
-              const day = new Date(date);
-              return day > startDate && day < endDate 
-                ? 'bg-blue-50 text-blue-600' 
-                : '';
-            }}
-          />
+          {oneWay ? (
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => handleChange([date, null])}
+              inline
+              minDate={new Date()}
+              calendarClassName="border-0 shadow-lg rounded-lg"
+            />
+          ) : (
+            <DatePicker
+              selected={startDate}
+              onChange={handleChange}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+              inline
+              minDate={new Date()}
+              calendarClassName="border-0 shadow-lg rounded-lg"
+              dayClassName={(date) => {
+                if (!startDate || !endDate) return '';
+                const day = new Date(date);
+                return day > startDate && day < endDate 
+                  ? 'bg-blue-50 text-blue-600' 
+                  : '';
+              }}
+            />
+          )}
         </div>
       )}
     </div>
