@@ -4,12 +4,21 @@ import { useDebouncedCallback } from "use-debounce";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { searchAirports, type Airport } from "@/app/features/flights/actions";
+import clsx from "clsx";
 
 type DropdownSearchProps = {
   name: string;
+  disabled?: boolean;
+  error?: boolean;
+  clearErrors: () => void;
 };
 
-export default function DropdownSearch({ name }: DropdownSearchProps) {
+export default function DropdownSearch({
+  name,
+  disabled,
+  error,
+  clearErrors,
+}: DropdownSearchProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -48,6 +57,9 @@ export default function DropdownSearch({ name }: DropdownSearchProps) {
   const handleInputChange = (value: string) => {
     setInputValue(value);
     handleSearch(value);
+    if (error && value.length >= 2) {
+      clearErrors();
+    }
   };
 
   const handleSelectAirport = (airport: Airport) => {
@@ -68,10 +80,14 @@ export default function DropdownSearch({ name }: DropdownSearchProps) {
     <div className="relative">
       <input
         type="text"
-        placeholder="City or airport"
-        value={inputValue}
+        placeholder={disabled ? "" : "City or airport"}
+        value={disabled ? "" : inputValue}
         onChange={(e) => handleInputChange(e.target.value)}
-        className="pl-10 w-full p-2 cursor-pointer border border-gray-300 text-gray-800 placeholder:text-gray-400 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        disabled={disabled}
+        className={clsx(
+          `pl-10 w-full p-2 cursor-pointer border border-gray-300 text-gray-500 placeholder:text-gray-400 disabled:bg-gray-200 rounded-md focus:border-cyan-200`,
+          error ? "border-red-500" : ""
+        )}
       />
       {/* Hidden input to store the airport code for form submission */}
       <input type="hidden" name={`${name}_code`} value={selectedAirportCode} />

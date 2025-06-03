@@ -7,7 +7,12 @@ import { useEffect } from "react";
 import DateRangePicker from "@/app/shared/components/forms/DateRangePicker";
 import PassengersAmount from "@/app/features/flights/components/passengers-amount";
 import DropdownSearch from "@/app/features/flights/components/DropdownSearch";
-import { GlobeAmericasIcon, GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline";
+import {
+  GlobeAmericasIcon,
+  GlobeAsiaAustraliaIcon,
+} from "@heroicons/react/24/outline";
+import { submitSearch } from "./features/flights/actions";
+// We don't need useFormState for this implementation
 
 export default function Landing() {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
@@ -16,6 +21,12 @@ export default function Landing() {
   ]);
   const [startDate, endDate] = dateRange;
   const [oneWay, setOneWay] = useState(false);
+  const [formErrors, setFormErrors] = useState({
+    from: false,
+    to: false,
+    startDate: false,
+    endDate: false,
+  });
 
   const adultsCounter = useCount(1);
   const childrenCounter = useCount(0);
@@ -46,6 +57,36 @@ export default function Landing() {
     });
   }, [adultsCounter.count, childrenCounter.count, eldersCounter.count]);
 
+  useEffect(() => {
+    setDateRange([null, null]);
+  }, [oneWay]);
+
+  // Function to validate form before submission
+  const validateForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Get form values
+    const formData = new FormData(e.currentTarget);
+    const from = formData.get("from_code") as string;
+    const to = formData.get("to_code") as string;
+    const startDate = formData.get("startDate") as string;
+    const endDate = oneWay ? null : (formData.get("endDate") as string);
+
+    // Check for empty fields
+    const errors = {
+      from: !from,
+      to: !to && !oneWay,
+      startDate: !startDate,
+      endDate: !endDate && !oneWay,
+    };
+
+    setFormErrors(errors);
+
+    // If no errors, submit the form
+    if (!errors.from && !errors.to && !errors.startDate && !errors.endDate) {
+      submitSearch(formData);
+    }
+  };
   return (
     <div className="min-h-screen flex flex-col">
       <div className="relative">
@@ -81,7 +122,7 @@ export default function Landing() {
                 </p>
               </div>
               <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
-                <form>
+                <form onSubmit={validateForm}>
                   <input
                     type="hidden"
                     name="adultsCount"
@@ -140,32 +181,45 @@ export default function Landing() {
                   </div>
                   <hr className="my-4 h-0.5 bg-gray-200 dark:bg-white/10" />
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-4">
-                    <div className="border border-b-2 border-transparent">
+                    <div className={`border border-b-2 border-transparent`}>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         From
                       </label>
                       <div className="relative">
                         <GlobeAmericasIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                        <DropdownSearch name="from" />
+                        <DropdownSearch
+                          name="from"
+                          error={formErrors.from}
+                          clearErrors={() =>
+                            setFormErrors({ ...formErrors, from: false })
+                          }
+                        />
                       </div>
                     </div>
-                    {!oneWay && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          To
-                        </label>
-                        <div className="relative">
-                          <GlobeAsiaAustraliaIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <DropdownSearch name="to" />
-                        </div>
-                      </div>
-                    )}
 
-                    <div>
+                    <div className={`border border-b-2 border-transparent`}>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        To
+                      </label>
+                      <div className="relative">
+                        <GlobeAsiaAustraliaIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <DropdownSearch
+                          name="to"
+                          disabled={oneWay}
+                          error={formErrors.to}
+                          clearErrors={() =>
+                            setFormErrors({ ...formErrors, to: false })
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div className={`border border-b-2 border-transparent`}>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Dates
                       </label>
                       <DateRangePicker
+                        oneWay={oneWay}
                         startDate={startDate}
                         endDate={endDate}
                         onChange={(update) => setDateRange(update)}

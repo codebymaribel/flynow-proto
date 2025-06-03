@@ -1,5 +1,5 @@
 import { UserIcon } from "@heroicons/react/24/outline";
-import CounterWithArrows from "./CounterWithArrows";
+import CounterWithArrows from "../../../shared/components/forms/CounterWithArrows";
 import { UseCountReturn } from "@/app/features/flights/hooks/useCount";
 import { useState } from "react";
 
