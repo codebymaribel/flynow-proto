@@ -37,7 +37,6 @@ export default function PassengersAmount({
           count={adultsCounter.count}
           increment={adultsCounter.increment}
           decrement={adultsCounter.decrement}
-          defaultValue={1}
         />
         <CounterWithArrows
           label="Children"

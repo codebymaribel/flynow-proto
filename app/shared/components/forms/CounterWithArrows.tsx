@@ -5,7 +5,6 @@ interface CounterWithArrowsProps {
   increment: () => void;
   decrement: () => void;
   count: number;
-  defaultValue?: number;
 }
 
 export default function CounterWithArrows({
@@ -13,7 +12,6 @@ export default function CounterWithArrows({
   increment,
   decrement,
   count,
-  defaultValue = 0,
 }: CounterWithArrowsProps) {
   return (
     <div className="flex flex-row justify-between gap-2 ">
@@ -25,7 +23,6 @@ export default function CounterWithArrows({
           <ChevronLeftIcon className="h-5 w-5 text-blue-400" />
         </a>
         <input
-          defaultValue={defaultValue}
           value={count}
           className="text-center font-medium text-gray-400 webkit-appearance-none w-6"
           disabled
