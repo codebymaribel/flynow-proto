@@ -28,12 +28,14 @@ const DateRangePicker = ({ startDate, endDate, onChange, oneWay = false }: DateR
   };
 
   const formatDate = (date: Date | null) => {
-    return date ? date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+    return date
+      ? date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      : "";
   };
 
   return (
     <div className="relative">
-      <div 
+      <div
         className="flex items-center gap-2 border rounded-lg p-2 cursor-pointer bg-white border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -52,7 +54,7 @@ const DateRangePicker = ({ startDate, endDate, onChange, oneWay = false }: DateR
           )}
         </div>
       </div>
-      
+
       {isOpen && (
         <div className="absolute z-50 mt-1">
           {oneWay ? (

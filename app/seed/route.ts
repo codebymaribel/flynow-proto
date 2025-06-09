@@ -119,18 +119,18 @@ async function seedSeatReserv() {
 async function seedFlights() {
   await sql`CREATE TABLE IF NOT EXISTS flights(
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    flight_code VARCHAR(5) NOT NULL,
-    from VARCHAR(50) NOT NULL,
-    to VARCHAR(50) NOT NULL,
-    airplane VARCHAR(50) NOT NULL,
+    flight_code VARCHAR(10) NOT NULL,
+    origin UUID NOT NULL,
+    destination UUID NOT NULL,
+    airplane UUID NOT NULL,
     date TIMESTAMP NOT NULL
     );`;
 
   const insertFlights = await Promise.all(
-    flights.map(({ id, flight_code, from, to, airplane, date }) => {
+    flights.map(({ id, flight_code, origin, destination, airplane, date }) => {
       return sql`
-            INSERT INTO flights (id, flight_code, from, to, airplane, date)
-            VALUES (${id}, ${flight_code}, ${from}, ${to}, ${airplane}, ${date})
+            INSERT INTO flights (id, flight_code, origin, destination, airplane, date)
+            VALUES (${id}, ${flight_code}, ${origin}, ${destination}, ${airplane}, ${date})
             ON CONFLICT (id) DO NOTHING;
             `;
     })
@@ -145,8 +145,8 @@ async function seedBookings() {
     flight VARCHAR(50) NOT NULL,
     user_id VARCHAR(50) NOT NULL,
     reserved_seats TEXT[] NOT NULL,
-    airport_from VARCHAR(50) NOT NULL,
-    airport_to VARCHAR(50) NOT NULL,
+    origin VARCHAR(50) NOT NULL,
+    destination VARCHAR(50) NOT NULL,
     price INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`;
@@ -158,16 +158,16 @@ async function seedBookings() {
         flight,
         user_id,
         reserved_seats,
-        airport_from,
-        airport_to,
+        origin,
+        destination,
         price,
         created_at,
       }) => {
         return sql`
-            INSERT INTO bookings (id, flight, user_id, reserved_seats, airport_from, airport_to, price, created_at)
+            INSERT INTO bookings (id, flight, user_id, reserved_seats, origin, destination, price, created_at)
             VALUES (${id}, ${flight}, ${user_id}, ${sql.array(
           reserved_seats
-        )}, ${airport_from}, ${airport_to}, ${price}, ${created_at})
+        )}, ${origin}, ${destination}, ${price}, ${created_at})
             ON CONFLICT (id) DO NOTHING;
             `;
       }
