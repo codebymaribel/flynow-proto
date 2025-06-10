@@ -23,7 +23,7 @@ export default function FlightSearchCard({
   currentSearch,
 }: {
   flight: flight_search_result;
-  currentSearch: current_search;
+  currentSearch: current_search | object;
 }) {
   const getAmenityIcon = (amenity: string) => {
     switch (amenity) {

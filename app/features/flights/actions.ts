@@ -106,7 +106,7 @@ export async function searchAvailableFlights(
     }: search_flight = searchParams;
 
     const sql = getDb();
-    console.log(passengers);
+    
     const origin_results = await sql<flight_search_result[]>`
     SELECT
      f.id,

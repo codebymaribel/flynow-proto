@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import {
   current_search,
   flights_search_result,
+  search_flight,
 } from "@/app/features/flights/lib/types";
 import FlightCardSkeleton from "@/app/features/flights/components/skeletons/FlightCardSkeleton";
 import FlightSearchCard from "@/app/features/flights/components/forms/FlightSearchCard";
@@ -49,7 +50,7 @@ export default function SearchPage() {
       },
       tripType: searchParams.get("tripType") as "round" | "one-way",
     };
-    const data = await searchAvailableFlights(query);
+    const data = await searchAvailableFlights(query as search_flight);
     setCurrentSearch(query);
     setAvailableFights(data);
     setLoading(false);
@@ -57,11 +58,8 @@ export default function SearchPage() {
 
   useEffect(() => {
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
-
-  useEffect(() => {
-    console.log(availableFights);
-  }, [availableFights]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700">
