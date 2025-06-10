@@ -121,21 +121,21 @@ export default function SearchPage() {
             <div className="flex items-center space-x-4 text-white">
               <div className="flex items-center space-x-2">
                 <MapPin className="h-5 w-5 text-cyan-400" />
-                <span className="font-medium">New York (JFK)</span>
+                <span className="font-medium">CARACAS ({currentSearch.origin_code})</span>
                 <span>→</span>
-                <span className="font-medium">Los Angeles (LAX)</span>
+                <span className="font-medium">MIAMI ({currentSearch.destination_code})</span>
               </div>
               <Separator orientation="vertical" className="h-6 bg-white/30" />
               <div className="flex items-center space-x-2">
                 <Calendar className="h-5 w-5 text-cyan-400" />
-                <span>Dec 15, 2024</span>
+                <span>{currentSearch.origin_date}</span>
               </div>
               <Separator orientation="vertical" className="h-6 bg-white/30" />
-              <span>1 Adult, Economy</span>
+              <span>{currentSearch.passengers?.adults} Adult</span>
             </div>
             <Button
               variant="outline"
-              className="border-white/30 text-white hover:bg-white/10"
+              className="border-white/30 text-black hover:bg-white/10 hover:text-white cursor-pointer"
             >
               Modify Search
             </Button>

@@ -44,7 +44,7 @@ export default function FlightSearchCard({
   return (
     <Card
       key={flight.id}
-      className="bg-white/95 backdrop-blur-sm border-white/20 hover:bg-white transition-colors"
+      className="bg-white/95 backdrop-blur-sm border-white/20 "
     >
       <CardContent className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
@@ -114,8 +114,8 @@ export default function FlightSearchCard({
           </div>
 
           {/* Price and Book */}
-          <div className="flex flex-row items-center gap-10">
-            <div className="flex flex-row  items-center border-2 border-gray-200 rounded-lg p-2">
+          <div className="flex flex-row items-center gap-10 ">
+            <div className="flex flex-row  items-center border-2 border-gray-200 rounded-lg p-2 hover:bg-white transition-colors cursor-pointer">
               <div className="h-34 w-2 bg-blue-400 rounded-full"></div>
               <div className="flex flex-col mx-4">
                 <div className="text-sm text-gray-600">From</div>
@@ -123,7 +123,7 @@ export default function FlightSearchCard({
                 <div className="text-sm text-gray-600">per person</div>
               </div>
             </div>
-            <div className="flex flex-row  items-center border-2 border-gray-200 rounded-lg p-2">
+            <div className="flex flex-row  items-center border-2 border-gray-200 rounded-lg p-2 hover:bg-white transition-colors cursor-pointer">
               <div className="h-34 w-2 bg-cyan-400 rounded-full"></div>
               <div className="flex flex-col mx-4">
                 <div className="text-sm text-gray-600">From</div>
