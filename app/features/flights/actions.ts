@@ -140,20 +140,20 @@ export async function searchAvailableFlights(
 
       return {
         success: true,
-        origin_flights: origin_results,
+        departure_flights: origin_results,
         destination_flights: destination_results,
       };
     }
     return {
       success: true,
-      origin_flights: origin_results,
+      departure_flights: origin_results,
       destination_flights: [],
     };
   } catch (error) {
     console.log(error);
     return {
       success: false,
-      origin_flights: [],
+      departure_flights: [],
       destination_flights: [],
     };
   }

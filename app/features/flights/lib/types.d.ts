@@ -30,6 +30,15 @@ export type flight_search_result = {
 
 export type flights_search_result = {
   success: boolean;
-  origin_flights: flight_search_result[];
+  departure_flights: flight_search_result[];
   destination_flights: flight_search_result[];
 };
+
+export type current_search = {
+  origin_code: string;
+  destination_code: string;
+  origin_date: string;
+  destination_date: string;
+  passengers: passengerCount;
+  tripType: "round" | "one-way";
+}
