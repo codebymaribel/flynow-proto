@@ -20,6 +20,7 @@ import {
 import FlightCardSkeleton from "@/app/features/flights/components/skeletons/FlightCardSkeleton";
 import FlightSearchCard from "@/app/features/flights/components/forms/FlightSearchCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatFlightDate } from "@/lib/utils";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
@@ -58,7 +59,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   return (
@@ -121,21 +122,31 @@ export default function SearchPage() {
             <div className="flex items-center space-x-4 text-white">
               <div className="flex items-center space-x-2">
                 <MapPin className="h-5 w-5 text-cyan-400" />
-                <span className="font-medium">CARACAS ({currentSearch.origin_code})</span>
+                <span className="font-medium">
+                  CARACAS ({(currentSearch as current_search).origin_code})
+                </span>
                 <span>→</span>
-                <span className="font-medium">MIAMI ({currentSearch.destination_code})</span>
+                <span className="font-medium">
+                  MIAMI ({(currentSearch as current_search).destination_code})
+                </span>
               </div>
               <Separator orientation="vertical" className="h-6 bg-white/30" />
               <div className="flex items-center space-x-2">
                 <Calendar className="h-5 w-5 text-cyan-400" />
-                <span>{currentSearch.origin_date}</span>
+                <span>
+                  {formatFlightDate(
+                    (currentSearch as current_search).origin_date
+                  )}
+                </span>
               </div>
               <Separator orientation="vertical" className="h-6 bg-white/30" />
-              <span>{currentSearch.passengers?.adults} Adult</span>
+              <span>
+                {(currentSearch as current_search).passengers?.adults} Adult
+              </span>
             </div>
             <Button
               variant="outline"
-              className="border-white/30 text-black hover:bg-white/10 hover:text-white cursor-pointer"
+              className="border-white/30 text-black hover:text-purple-800 cursor-pointer"
             >
               Modify Search
             </Button>
@@ -162,7 +173,7 @@ export default function SearchPage() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="border-white/30 text-white hover:bg-white/10"
+                    className="border-white/30 text-black hover:text-purple-800 cursor-pointer"
                   >
                     <Filter className="h-4 w-4 mr-2" />
                     Filters
@@ -237,10 +248,10 @@ export default function SearchPage() {
             <Sorting />
 
             {/* Load More */}
-            <div className="text-center mt-8">
+            <div className="text-center">
               <Button
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10"
+                className="border-white/30 text-black hover:text-purple-800 cursor-pointer"
               >
                 Load More Flights
               </Button>
@@ -250,7 +261,7 @@ export default function SearchPage() {
         {/* Flight Results */}
 
         <div
-          className="space-y-4"
+          className="space-y-4 mt-6"
           style={{ minHeight: loading ? "1200px" : "auto" }}
         >
           {loading
